@@ -1,0 +1,162 @@
+﻿@page "/projects"
+@inherits ProjectsBase
+
+<h3>Projects</h3>
+
+@if (projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (!projects.Any())
+    {
+        <p>No projects found.</p>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in projects)
+            {
+                <tr>
+                    @if (editingProject?.Id == project.Id)
+                    {
+                        <td><input @bind="editingProject.Name" /></td>
+                        <td><input @bind="editingProject.Description" /></td>
+                        <td>
+                            <select @bind="editingProject.StatusId">
+                                @foreach (var status in statuses)
+                                {
+                                    <option value="@status.Id">@status.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <button @onclick="() => SaveProjectAsync(project.Id)">Save</button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@project.Name</td>
+                        <td>@project.Description</td>
+                        <td>@project.StatusName</td>
+                        <td>
+                            <button @onclick="() => EditProject(project)">Edit</button>
+                            <button @onclick="() => LoadTasksForProject(project.Id)">Show Tasks</button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Add New Project</h4>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p style="color:red">@errorMessage</p>
+    }
+    <input placeholder="Name" @bind="newProject.Name" />
+    <input placeholder="Description" @bind="newProject.Description" />
+    <select @bind="newProject.StatusId">
+        <option value="">-- Select Status --</option>
+        @foreach (var status in statuses)
+        {
+            <option value="@status.Id">@status.Name</option>
+        }
+    </select>
+    <button @onclick="AddProjectAsync">Add Project</button>
+
+    @if (projectTasks != null)
+    {
+        <h4>Tasks</h4>
+
+        @if (!projectTasks.Any())
+        {
+            <p>No tasks available for this project.</p>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Assigned To</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in projectTasks)
+                    {
+                        <tr>
+                            @if (editingTask?.Id == task.Id)
+                            {
+                                <td><input @bind="editingTask.Name" /></td>
+                                <td><input @bind="editingTask.Description" /></td>
+                                <td>
+                                    <select @bind="editingTask.StatusId">
+                                        @foreach (var status in statuses)
+                                        {
+                                            <option value="@status.Id">@status.Name</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select @bind="editingTask.UserId">
+                                        @foreach (var user in users)
+                                        {
+                                            <option value="@user.Id">@user.Username</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <button @onclick="() => SaveTaskAsync(task.Id)">Save</button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>@task.Name</td>
+                                <td>@task.Description</td>
+                                <td>@task.StatusName</td>
+                                <td>@task.UserName</td>
+                                <td>
+                                    <button @onclick="() => EditTask(task)">Edit</button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <h5>Add New Task</h5>
+        <div>
+            <input placeholder="Task Name" @bind="newTask.Name" />
+            <input placeholder="Description" @bind="newTask.Description" />
+            <select @bind="newTask.StatusId">
+                <option value="">-- Select Status --</option>
+                @foreach (var status in statuses)
+                {
+                    <option value="@status.Id">@status.Name</option>
+                }
+            </select>
+            <select @bind="newTask.UserId">
+                <option value="">-- Select User --</option>
+                @foreach (var user in users)
+                {
+                    <option value="@user.Id">@user.Username</option>
+                }
+            </select>
+            <button @onclick="AddTaskAsync">Add Task</button>
+        </div>
+    }
+}

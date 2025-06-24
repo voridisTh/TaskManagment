@@ -18,13 +18,14 @@ namespace DataAccess.Data
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<Status> Statuses { get; set; }
-        public DbSet<TaskItem> TaskItems { get; set; } // if you created this class
+        public DbSet<TaskItem> TaskItems { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Optional: add your foreign key configurations
+            
             modelBuilder.Entity<Project>()
             .HasOne(p => p.ProjectStatus)
             .WithMany(s => s.Projects)
@@ -44,6 +45,13 @@ namespace DataAccess.Data
             .WithMany(p => p.Tasks)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<TaskItem>()
+                .HasOne(t => t.TaskUser)
+                .WithMany()                  
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

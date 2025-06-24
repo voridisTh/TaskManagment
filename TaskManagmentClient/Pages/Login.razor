@@ -1,0 +1,25 @@
+﻿@page "/login"
+@inherits LoginBase
+
+<h3>Login</h3>
+
+<div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input id="username" class="form-control" @bind="Username" />
+</div>
+
+<div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input id="password" type="password" class="form-control" @bind="Password" />
+</div>
+
+<button class="btn btn-primary" @onclick="TryLogin" disabled="@IsBusy">
+    @(IsBusy ? "Logging in…" : "Log in")
+</button>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert @AlertClass mt-3">
+        @Message
+    </div>
+}

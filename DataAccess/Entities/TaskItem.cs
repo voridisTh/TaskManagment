@@ -15,5 +15,7 @@ namespace DataAccess.Entities
         public Project TaskProject { get; set; }
         public int StatusId { get; set; }
         public Status TaskStatus { get; set; }
+        public int UserId { get; set; }
+        public User TaskUser {  get; set; }
     }
 }
