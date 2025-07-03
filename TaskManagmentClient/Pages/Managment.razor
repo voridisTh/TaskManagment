@@ -1,0 +1,23 @@
+﻿@page "/managment"
+@inherits ManagmentBase
+
+<h3 class="mb-3">Projects</h3>
+
+<button class="btn btn-success mb-2" @onclick="() => NavToEdit(0)">Add New Project</button>
+
+@if (IsBusy)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var p in Projects)
+    {
+        <div class="border p-3 mb-3">
+            <div><strong>Name:</strong> @p.Name</div>
+            <div><strong>Description:</strong> @p.Description</div>
+            <div><strong>Status:</strong> @p.StatusName</div>
+            <button class="btn btn-primary mt-2" @onclick="() => NavToEdit(p.Id)">Edit</button>
+        </div>
+    }
+}
