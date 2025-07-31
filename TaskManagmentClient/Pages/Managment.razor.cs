@@ -28,6 +28,6 @@ namespace TaskManagmentClient.Pages
         }
 
         protected void NavToEdit(int id)
-            => Nav.NavigateTo($"/projects/edit/{id}");
+            => Nav.NavigateTo($"/managment/edit/{id}");
     }
 }

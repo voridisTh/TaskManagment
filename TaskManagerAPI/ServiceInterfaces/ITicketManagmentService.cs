@@ -14,7 +14,8 @@ namespace TaskManagmentAPI.ServiceInterfaces
            Task<List<UserDto>> GetAllUsersAsync();
            Task<ProjectDto> UpdateProjectAsync(UpdateProjectDto updatedProject);
            Task<TaskDto> UpdateTaskAsync(UpdateTaskDto updatedTask);
-        }
+           Task<ProjectDto?> GetProjectByIdAsync(int id);
+    }
 
 }
 

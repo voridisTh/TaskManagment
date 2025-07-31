@@ -181,5 +181,20 @@ namespace TaskManagmentAPI.Service
                 UserName = userName
             };
         }
+        public async Task<ProjectDto?> GetProjectByIdAsync(int id)
+        {
+            return await _context.Projects
+                .Include(p => p.ProjectStatus)
+                .Where(p => p.Id == id)
+                .Select(p => new ProjectDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StatusId = p.StatusId,
+                    StatusName = p.ProjectStatus.Name
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }

@@ -120,5 +120,15 @@ namespace TaskManagmentAPI.ServiceControllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("projects/{id}")]
+        public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
+        {
+            var project = await _ticketService.GetProjectByIdAsync(id);
+            if (project == null)
+                return NotFound();
+
+            return Ok(project);
+        }
     }
 }
