@@ -1,0 +1,53 @@
+﻿@page "/managment/tasks/edit/{ProjectId:int}/{TaskId:int}"
+@inherits EditTaskBase
+
+<h3>@(IsNew ? "Add Task" : "Edit Task")</h3>
+
+@if (!string.IsNullOrEmpty(Alert))
+{
+    <div class="alert alert-info">@Alert</div>
+}
+
+@if (Busy)
+{
+    <p><em>Saving...</em></p>
+}
+else
+{
+    <EditForm Model="Model" OnValidSubmit="SaveAsync">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3">
+            <label>Name</label>
+            <InputText class="form-control" @bind-Value="Model.Name" />
+        </div>
+
+        <div class="mb-3">
+            <label>Description</label>
+            <InputTextArea class="form-control" @bind-Value="Model.Description" />
+        </div>
+
+        <div class="mb-3">
+            <label>Status</label>
+            <InputSelect class="form-control" @bind-Value="Model.StatusId">
+                @foreach (var s in Statuses)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="mb-3">
+            <label>Assigned User</label>
+            <InputSelect class="form-control" @bind-Value="Model.UserId">
+                @foreach (var u in Users)
+                {
+                    <option value="@u.Id">@u.Username</option>
+                }
+            </InputSelect>
+        </div>
+
+        <button class="btn btn-primary" type="submit" disabled="@Busy">Save</button>
+        <button class="btn btn-secondary ms-2" type="button" @onclick="Cancel">Cancel</button>
+    </EditForm>
+}

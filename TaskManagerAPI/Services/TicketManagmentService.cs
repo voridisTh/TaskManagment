@@ -196,5 +196,22 @@ namespace TaskManagmentAPI.Service
                 })
                 .FirstOrDefaultAsync();
         }
+        public async Task<TaskDto?> GetTaskByIdAsync(int taskId)
+        {
+            return await _context.TaskItems
+                .Where(t => t.Id == taskId)
+                .Select(t => new TaskDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    StatusId = t.StatusId,
+                    StatusName = t.TaskStatus.Name,
+                    ProjectId = t.ProjectId,
+                    UserId = t.UserId,
+                    UserName = t.TaskUser.Username
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }

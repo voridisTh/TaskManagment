@@ -130,5 +130,12 @@ namespace TaskManagmentAPI.ServiceControllers
 
             return Ok(project);
         }
+
+        [HttpGet("tasks/{taskId}")]
+        public async Task<IActionResult> GetTaskById(int taskId)
+        {
+            var task = await _ticketService.GetTaskByIdAsync(taskId);
+            return task == null ? NotFound() : Ok(task);
+        }
     }
 }
