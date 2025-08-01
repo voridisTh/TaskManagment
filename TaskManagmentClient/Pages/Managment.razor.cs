@@ -25,9 +25,16 @@ namespace TaskManagmentClient.Pages
             Projects = await Http.GetFromJsonAsync<List<ProjectDto>>("api/TicketManagment/projects");
             statuses = await Http.GetFromJsonAsync<List<StatusDto>>("api/TicketManagment/statuses");
             IsBusy = false;
+
         }
 
         protected void NavToEdit(int id)
-            => Nav.NavigateTo($"/managment/edit/{id}");
+        {
+            Nav.NavigateTo($"/managment/edit/{id}");
+        }
+        protected void OpenTasks(int projectId)
+        {
+            Nav.NavigateTo($"/managment/tasks/{projectId}");
+        }
     }
 }

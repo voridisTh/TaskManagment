@@ -1,0 +1,48 @@
+﻿@page "/managment/tasks/{ProjectId:int}"
+@inherits ProjectTasksBase
+
+<h3 class="mb-3">Tasks for Project: <strong>@ProjectName</strong></h3>
+
+@if (!IsLoaded)
+{
+    <p><em>Loading tasks...</em></p>
+}
+else if (ErrorMessage != null)
+{
+    <p class="text-danger">@ErrorMessage</p>
+}
+else
+{
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-secondary" @onclick="GoBack">Back</button>
+        <button class="btn btn-success" @onclick="AddNewTask">Add New Task</button>
+    </div>
+
+    @if (Tasks.Count == 0)
+    {
+        <div class="alert alert-warning">No tasks found for this project.</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var task in Tasks)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@task.Name</h5>
+                            <p class="card-text">@task.Description</p>
+
+                            <ul class="list-unstyled mb-3">
+                                <li><strong>Status:</strong> @task.StatusName</li>
+                                <li><strong>Assigned to:</strong> @task.UserName</li>
+                            </ul>
+
+                            <button class="btn btn-primary btn-sm" @onclick="() => EditTask(task.Id)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

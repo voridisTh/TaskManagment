@@ -18,6 +18,7 @@ else
             <div><strong>Description:</strong> @p.Description</div>
             <div><strong>Status:</strong> @p.StatusName</div>
             <button class="btn btn-primary mt-2" @onclick="() => NavToEdit(p.Id)">Edit</button>
+            <button class="btn btn-dark mt-2" @onclick="() => OpenTasks(p.Id)">Tasks</button>
         </div>
     }
 }
