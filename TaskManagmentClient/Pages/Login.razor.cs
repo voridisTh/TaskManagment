@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Shared.DTOs;
+using TaskManagmentClient.Services;
 
 
 namespace TaskManagmentClient.Pages
@@ -17,14 +18,14 @@ namespace TaskManagmentClient.Pages
 
         [Inject]
         protected NavigationManager Navigation { get; set; }
-
+        [Inject] 
+        private LoginState LoginState { get; set; }
         protected string Username { get; set; } = string.Empty;
         protected string Password { get; set; } = string.Empty;
-
         protected string Message { get; set; }
         protected string AlertClass { get; set; }
         protected bool IsBusy { get; set; }
-        
+     
         protected async Task TryLogin()
         {
             Message = string.Empty;
@@ -51,6 +52,7 @@ namespace TaskManagmentClient.Pages
                 var user = await response.Content.ReadFromJsonAsync<UserDto>();
                 Message = $"Login successful! Welcome, {user.Username}.";
                 AlertClass = "alert-success";
+                LoginState.SetLogin(user.Username);
                 Navigation.NavigateTo("/projects");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)

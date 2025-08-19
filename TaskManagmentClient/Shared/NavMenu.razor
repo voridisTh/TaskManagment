@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using TaskManagmentClient.Services
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">TaskManagmentClient</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -16,9 +18,12 @@
             <NavLink class="nav-link" href="login">
                 <span class="oi oi-account-login" aria-hidden="true"></span> Login
             </NavLink>
-            <NavLink class="nav-link" href="managment">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Managment
-            </NavLink>
+            @if (loginState.IsLoggedIn)
+            {
+                <NavLink class="nav-link" href="managment">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Management
+                </NavLink>
+            }
         </div>
     </nav>
 </div>
@@ -31,5 +36,18 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    [Inject]
+    private LoginState loginState { get; set; }
+
+    protected override void OnInitialized()
+    {
+        loginState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        loginState.OnChange -= StateHasChanged;
     }
 }
