@@ -15,14 +15,21 @@
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
-            <NavLink class="nav-link" href="login">
-                <span class="oi oi-account-login" aria-hidden="true"></span> Login
-            </NavLink>
-            @if (loginState.IsLoggedIn)
+            @if (!loginState.IsLoggedIn)
+            {
+                <NavLink class="nav-link" href="login">
+                    <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                </NavLink>
+            }
+            else
             {
                 <NavLink class="nav-link" href="managment">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Management
                 </NavLink>
+
+                <button class="btn btn-link nav-link" @onclick="Logout">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout (@loginState.Username)
+                </button>
             }
         </div>
     </nav>
@@ -40,6 +47,15 @@
 
     [Inject]
     private LoginState loginState { get; set; }
+
+    [Inject]
+    private NavigationManager Navigation { get; set; }
+
+    private void Logout()
+    {
+        loginState.Logout();
+        Navigation.NavigateTo("/"); 
+    }
 
     protected override void OnInitialized()
     {
